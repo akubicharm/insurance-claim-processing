@@ -1,0 +1,230 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sql-script-configmap-ja
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+data:
+  script.sql: |  
+    CREATE SCHEMA IF NOT EXISTS claims
+    AUTHORIZATION claimdb;
+
+    DROP TABLE IF EXISTS claims.claims CASCADE;
+    DROP TABLE IF EXISTS claims.original_images CASCADE;
+    DROP TABLE IF EXISTS claims.processed_images CASCADE;
+    DROP SEQUENCE IF EXISTS claims.claims_id_seq CASCADE;
+    DROP SEQUENCE IF EXISTS claims.original_images_id_seq CASCADE;
+    DROP SEQUENCE IF EXISTS claims.processed_images_id_seq CASCADE;
+
+    -- SEQUENCE: claims.claims_id_seq
+
+    CREATE SEQUENCE IF NOT EXISTS claims.claims_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+
+    -- Table: claims.claims
+
+    CREATE TABLE IF NOT EXISTS claims.claims
+    (
+        id integer NOT NULL DEFAULT nextval('claims.claims_id_seq'::regclass),
+        subject text COLLATE pg_catalog."default",
+        body text COLLATE pg_catalog."default",
+        summary text COLLATE pg_catalog."default",
+        location text COLLATE pg_catalog."default",
+        "time" text COLLATE pg_catalog."default",
+        sentiment text COLLATE pg_catalog."default",
+        CONSTRAINT claims_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    -- Link Table to Sequence    
+
+    ALTER SEQUENCE claims.claims_id_seq 
+        OWNED BY claims.claims.id;
+
+    -- SEQUENCE: claims.original_images_id_seq
+
+    CREATE SEQUENCE IF NOT EXISTS claims.original_images_id_seq
+        INCREMENT 1
+        START 1
+        MINVALUE 1
+        MAXVALUE 2147483647
+        CACHE 1;
+
+    -- Table: claims.original_images
+
+    CREATE TABLE IF NOT EXISTS claims.original_images
+    (
+        id integer NOT NULL DEFAULT nextval('claims.original_images_id_seq'::regclass),
+        image_name text COLLATE pg_catalog."default" NOT NULL,
+        image_key text COLLATE pg_catalog."default" NOT NULL,
+        claim_id integer NOT NULL,
+        CONSTRAINT original_images_pkey PRIMARY KEY (id),
+        CONSTRAINT fk_claim_id FOREIGN KEY (claim_id)
+            REFERENCES claims.claims (id) MATCH SIMPLE
+            ON UPDATE CASCADE
+            ON DELETE CASCADE
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    -- Link Table to Sequence    
+
+    ALTER SEQUENCE claims.original_images_id_seq 
+        OWNED BY claims.original_images.id;
+
+    -- SEQUENCE: claims.processed_images_id_seq
+
+    CREATE SEQUENCE IF NOT EXISTS claims.processed_images_id_seq
+        INCREMENT 1
+        START 1
+        MINVALUE 1
+        MAXVALUE 2147483647
+        CACHE 1;
+
+    -- Table: claims.processed_images
+
+    CREATE TABLE IF NOT EXISTS claims.processed_images
+    (
+        id integer NOT NULL DEFAULT nextval('claims.processed_images_id_seq'::regclass),
+        image_name text COLLATE pg_catalog."default" NOT NULL,
+        image_key text COLLATE pg_catalog."default" NOT NULL,
+        claim_id integer NOT NULL,
+        CONSTRAINT processed_images_pkey PRIMARY KEY (id),
+        CONSTRAINT fk_claim_id FOREIGN KEY (claim_id)
+            REFERENCES claims.claims (id) MATCH SIMPLE
+            ON UPDATE CASCADE
+            ON DELETE CASCADE
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    -- Link Table to Sequence    
+
+    ALTER SEQUENCE claims.processed_images_id_seq 
+        OWNED BY claims.processed_images.id;
+
+    -----
+    -- INSERTS
+    -----
+    -- CLAIM1
+
+    INSERT INTO claims.claims (subject, body, summary, location, time, sentiment) VALUES ('最近の自動車事故に関する請求 - Policy Number: AC-987654321',
+    'パシフィック シールド インシュアランス様
+
+    このメールがお元気で届きますように。私の名前はサラ ターナーです。2024 年 1 月 2 日午後 3 時 30 分頃に発生した最近の自動車事故について、保険金を請求するためにこのメールを書いています。私の保険証券番号は AC-987654321 です。
+
+    事故はエバーグリーン市のバーチ ストリートとウィロー アベニューの交差点で発生しました。私は、ナンバー プレート番号 DEF-456 の黒いトヨタ カムリを運転し、バーチ ストリートを南に向かっていました。交差点では信号が青だったので、交差点を通過しました。
+
+    同時に、ナンバー プレート番号 GHI-789 の青いシボレー トラバースがウィロー アベニューを西に向かって走行していました。残念ながら、運転手は赤信号で停止せず、私の車の助手席側と衝突しました。
+
+    この衝突により、両方の車両に大きな損傷が発生しました。
+
+        私のトヨタ カムリのフロント バンパーと右ヘッドライトは大きな損傷を受けており、シボレー トラバースの運転席側前方にも損傷があります。幸い、事故で負傷者はおらず、両方のドライバーは車両を道路脇に移動させることができました。
+
+    私はすぐに相手のドライバーであるダニエル レイノルズ氏と、名前、電話番号、保険の詳細、事故の簡単な説明などの情報を交換しました。さらに、両方の車両の損傷や信号の位置など、事故現場の写真を撮りました。
+
+    このメールには、写真、エバーグリーン警察署に提出された警察報告書のコピー、車を査定に出したエバーグリーン オート リペアからの修理費用の見積書など、必要な書類を添付しました。
+
+    この件について早急に対応していただき、請求手続きの次のステップについてご指導いただければ幸いです。
+
+    追加の情報や書類が必要な場合は、(555) 123-4567 または sarah.turner@email.com までお気軽にご連絡ください。
+
+    ご協力に感謝いたします。この申し立てが速やかに解決されることを期待しています。
+
+    よろしくお願いいたします。
+
+    Sarah Turner
+    123 Oak Street
+    Evergreen, CA 98765
+    (555) 123-4567
+    sarah.turner@email.com
+    ',
+    '2024 年 1 月 2 日午後 3 時 30 分頃、エバーグリーンのバーチ ストリートとウィロー アベニューの交差点で自動車事故が発生しました。事故に巻き込まれたのは、黒のトヨタ カムリ (DEF-456) を運転していたサラ ターナーと、青のシボレー トラバース (GHI-789) を運転していたダニエル レイノルズです。
+
+    サラがバーチ ストリートを南に向かっていたところ、ダニエルがウィロー アベニューの赤信号で停止せず、サラの車と衝突しました。両ドライバーは情報を交換し、事故現場の写真を撮影しました。そこにはサラのトヨタ カムリの助手席側とダニエルのシボレー トラバースの運転席側の損傷が含まれていました。負傷者は報告されていません。
+
+    サラは、写真、警察の報告書、修理費用の見積もりなどの必要な書類をメールに添付しました。彼女は、クレームへの迅速な対応を希望しており、追加情報や必要な書類については (555) 123-4567 または sarah.turner@email.com までご連絡ください。
+    ',
+    'エバーグリーン市のバーチ ストリートとウィロー アベニューの交差点',
+    '2024年1月2日午後3時30分頃',
+    '送信者のサラ・ターナーさんは、メールで丁寧かつプロフェッショナルな口調で話しています。彼女は自動車事故について、またその後の請求手続きについて、丁重かつ詳細に説明しています。彼女は、この問題に迅速に対応してほしいと依頼し、必要な書類をすべて提出しています。全体として、彼女は請求手続きに積極的かつ協力的であるようにと心掛けています。'
+    );
+
+    -- CLAIM2
+
+    INSERT INTO claims.claims (subject, body, summary, location, time, sentiment) VALUES ('緊急: クレーム #XYZ789 に関する許容できない遅延とコミュニケーション不足', '
+    プレステージ インシュアランス様
+
+    私は、最近の請求（参照番号 #XYZ789）に関して受けたひどいサービスに非常に不満を表明するためにこの手紙を書いています。貴社からの連絡不足と対応の遅れはまったく受け入れられません。この問題を是正するために早急な対応を求めます。
+
+    事故は 2024 年 1 月 15 日午後 3 時 45 分頃、リバータウンのメープル ストリートとオーク アベニューの交差点付近で発生しました。私の車であるシルバー ホーク GT は、前述の交差点で赤信号を無視したサマンサ レイノルズと特定される別のドライバーに衝突されました。この事故により、私の車の前部に大きな損傷が生じ、深刻な構造的損傷とエアバッグの展開が発生しました。
+
+    私は事故後すぐに請求を報告し、必要なすべての詳細、目撃者情報、衝突に至るまでの出来事の詳細な説明を提供しました。しかし、貴社の対応、あるいは対応の欠如は、まったく嘆かわしいものでした。
+    ',
+    '
+    本文は、ジョン・T・アンダーソンがプレステージ・インシュアランスに提出した、未解決の自動車保険請求 #XYZ789 に関する苦情の手紙です。事件は 2024 年 1 月 15 日に発生し、アンダーソンの車が別のドライバーであるサマンサ・レイノルズに赤信号を無視されて衝突しました。事故によりアンダーソンの車は重大な損傷を受け、彼は必要な詳細をすべて提供して直ちに請求を報告しました。しかし、彼はプレステージ・インシュアランスからのコミュニケーションが不十分で、対応が遅れました。アンダーソンは、請求処理の遅延、透明性、緊急性について説明を求めています。彼は、懸念事項が速やかに解決されなければ、規制当局に問題をエスカレートし、法的措置を検討すると脅しています。アンダーソンは、今後 48 時間以内に請求状況の包括的な最新情報を要求しています。
+    ',
+    'リバータウンのメープルストリートとオークアベニューの交差点付近',
+    '2024年1月15日午後3時45分頃',
+    'このクレームの送信者は、Prestige Insurances による保険金請求の処理に非常に不満を表明しています。彼らは、コミュニケーション不足とクレーム処理の大幅な遅延に不満を抱いています。メッセージのトーンは要求的で断定的であり、送信者は懸念事項に迅速に対処しない場合は問題をエスカレートすると脅しています。'
+    );
+
+    -- CLAIM3
+
+    INSERT INTO claims.claims (subject, body, summary, location, time, sentiment) VALUES ('緊急：自動車事故の賠償請求支援が必要です', '
+    AssuranceCare Inc. 様
+
+    このメールがお元気でいらっしゃることを願っております。最近起こった出来事についてお知らせするために書いています。車の事故についてなのですが、どう対処したらよいかよくわかりません。正直、不安で混乱しています。
+
+    事故は、2024 年 1 月 15 日午後 3 時 30 分頃に発生しました。私は車を運転中、または運転しようとしていたとき、メープル ストリートとエルム アベニューの交差点にいました。ガソリン スタンドと、ブリュー ヘイブンというコーヒー ショップの近くでした。それが関係あるかどうかはわかりませんが、そうですね。
+
+    運転中だったのですが、突然、どこからともなく、別の車、ブルー クレスト セダンが私の車の運転席側に衝突しました。うわー、何が起こったんだって感じでした。他の車からキーキーという音がして、クラクションが鳴って、本当に、うーん、圧倒された気分でした。
+
+    その日の天気は、うーん、ちょっと曇りでしたが、雨は降っていなかったと思います。というか、よく覚えていないんです。重要なことでしたらすみません。とにかく、道路、いや、交差点は、車がさまざまな方向に走っていて、かなり混雑していました。それが、あなたが必要とするかもしれない詳細だと思います。
+
+    損傷については、私の車は、運転席側にかなりの損傷があります。フロントドアはへこみ、サイドミラーは、糸でぶら下がっているような状態です。現状では、運転できる状態ではありません。ブルー クレスト セダンも損傷がありましたが、すべてがあまりにも急に起こったので、何が損傷したのか正確にはわかりません。
+
+    他のドライバーと情報を交換することはできました。名前はサラ・ジョンソンで、電話番号 (555-1234)、ナンバープレート番号 (ABC123)、保険情報を入手しました。それで、お役に立てば幸いです。
+
+    今、何をすべきかよくわかりません。特定の修理工場に行く必要がありますか? 修理の見積もりを取る必要がありますか? また、保険金請求の手続きはどのように進めればよいですか? ちょっと途方に暮れています。何かアドバイスや支援をいただければ、本当にありがたいです。
+
+    このメールがまとまりがなく申し訳ありません。状況全体が本当に不安です。ご理解のほどよろしくお願いいたします。
+
+    敬具、
+
+    ジェーン・ドウ
+    保険証番号: AC987654
+    ',
+    '
+    2024 年 1 月 15 日午後 3 時 30 分頃、ジェーン・ドウはガソリンスタンドとブリュー・ヘイブンというコーヒーショップの近くにあるメープル・ストリートとエルム・アベニューの交差点で交通事故に遭いました。ブルー・クレスト・セダンが彼女の車の運転席側に衝突し、へこんだフロントドアやぶら下がったサイドミラーなど、運転席側に大きな損傷が生じました。天気は曇りでしたが、雨が降っていたかどうかは不明です。事故は複数の車が行き交う混雑した交差点で発生しました。ジェーンは他の運転手であるサラ・ジョンソンと情報を交換し、サラは彼女の電話番号 (555-1234)、ナンバープレート番号 (ABC123)、および保険情報を提供しました。ジェーンは、特定の修理工場に行く必要があるのか​​、修理の見積もりを取得する必要があるのか​​、保険金請求をどのように進めればよいのかなど、次に取るべき手順がわかりません。彼女は AssuranceCare Inc. に指導と支援を求めています。
+    ',
+    'メープルストリートとエルムアベニューの交差点',
+    '2024年1月15日午後3時30分頃',
+    '保険金請求の送信者であるジェーン・ドウさんは、自分が巻き込まれた自動車事故に関して不安と混乱を訴えています。彼女は、保険金請求の手続きと自動車の修理をスムーズに進めるために、AssuranceCare Inc. からの指導と支援を求めています。'
+    );
+
+    -- IMAGES
+
+    INSERT INTO claims.original_images (image_name, image_key, claim_id) VALUES ('car0.jpg', 'original_images/car0.jpg', 1);
+    INSERT INTO claims.original_images (image_name, image_key, claim_id) VALUES ('car1.jpg', 'original_images/car1.jpg', 1);
+    INSERT INTO claims.original_images (image_name, image_key, claim_id) VALUES ('car2.jpg', 'original_images/car2.jpg', 2);
+    INSERT INTO claims.original_images (image_name, image_key, claim_id) VALUES ('car3.jpg', 'original_images/car3.jpg', 3);
+    INSERT INTO claims.original_images (image_name, image_key, claim_id) VALUES ('car5.jpg', 'original_images/car5.jpg', 3);
+    INSERT INTO claims.original_images (image_name, image_key, claim_id) VALUES ('car6.jpg', 'original_images/car6.jpg', 3);
+    INSERT INTO claims.processed_images (image_name, image_key, claim_id) VALUES ('car0-processed.jpg', 'processed_images/car0-processed.jpg', 1);
+    INSERT INTO claims.processed_images (image_name, image_key, claim_id) VALUES ('car1-processed.jpg', 'processed_images/car1-processed.jpg', 1);
+    INSERT INTO claims.processed_images (image_name, image_key, claim_id) VALUES ('car2-processed.jpg', 'processed_images/car2-processed.jpg', 2);
+    INSERT INTO claims.processed_images (image_name, image_key, claim_id) VALUES ('car3-processed.jpg', 'processed_images/car3-processed.jpg', 3);
+    INSERT INTO claims.processed_images (image_name, image_key, claim_id) VALUES ('car5-processed.jpg', 'processed_images/car5-processed.jpg', 3);
+    INSERT INTO claims.processed_images (image_name, image_key, claim_id) VALUES ('car6-processed.jpg', 'processed_images/car6-processed.jpg', 3);
