@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: sql-script-configmap
   annotations:
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: "1"
 data:
   script.sql: |  
     CREATE SCHEMA IF NOT EXISTS claims
@@ -119,26 +119,30 @@ data:
     -----
     -- CLAIM1
 
-    INSERT INTO claims.claims (subject, body, summary, location, time, sentiment) VALUES ('Claim for Recent Car Accident - Policy Number: AC-987654321', '
-    Dear Pacific Shield Insurance,
-    
-    I hope this email finds you well. My name is Sarah Turner, and I am writing to file a claim for a recent car accident that occurred on January 2nd, 2024, at approximately 3:30 PM. My policy number is AC-987654321.
+    INSERT INTO claims.claims (subject, body, summary, location, time, sentiment) VALUES ('最近の自動車事故に関する請求 - Policy Number: AC-987654321',
+    'パシフィック シールド インシュアランス様
 
-    The accident took place at the intersection of Birch Street and Willow Avenue in the city of Evergreen. I was driving my vehicle, a black Toyota Camry with license plate number DEF-456, heading south on Birch Street. At the intersection, the traffic signal was green, and I proceeded through the intersection.
+    このメールがお元気で届きますように。私の名前はサラ ターナーです。2024 年 1 月 2 日午後 3 時 30 分頃に発生した最近の自動車事故について、保険金を請求するためにこのメールを書いています。私の保険証券番号は AC-987654321 です。
 
-    At the same time, another vehicle, a blue Chevrolet Traverse with license plate number GHI-789, was traveling west on Willow Avenue. Unfortunately, the driver failed to stop at the red traffic signal, resulting in a collision with the front passenger side of my vehicle.
+    事故はエバーグリーン市のバーチ ストリートとウィロー アベニューの交差点で発生しました。私は、ナンバー プレート番号 DEF-456 の黒いトヨタ カムリを運転し、バーチ ストリートを南に向かっていました。交差点では信号が青だったので、交差点を通過しました。
 
-    The impact caused significant damage to both vehicles. The front bumper and right headlight of my Toyota Camry are extensively damaged, and there are also damages to the front driver''s side of the Chevrolet Traverse. Fortunately, no injuries were sustained during the accident, and both drivers were able to move their vehicles to the side of the road.
+    同時に、ナンバー プレート番号 GHI-789 の青いシボレー トラバースがウィロー アベニューを西に向かって走行していました。残念ながら、運転手は赤信号で停止せず、私の車の助手席側と衝突しました。
 
-    I promptly exchanged information with the other driver, Mr. Daniel Reynolds, including our names, phone numbers, insurance details, and a brief description of the accident. Additionally, I took photos of the accident scene, including the damages to both vehicles and the position of the traffic signal.
+    この衝突により、両方の車両に大きな損傷が発生しました。
 
-    I have attached the necessary documents to this email, including the photos, a copy of the police report filed at the Evergreen Police Department, and the estimate for the repair costs from Evergreen Auto Repair, where I have taken my vehicle for assessment.
+        私のトヨタ カムリのフロント バンパーと右ヘッドライトは大きな損傷を受けており、シボレー トラバースの運転席側前方にも損傷があります。幸い、事故で負傷者はおらず、両方のドライバーは車両を道路脇に移動させることができました。
 
-    I kindly request your prompt attention to this matter and would appreciate any guidance on the next steps in the claims process. If you require any additional information or documentation, please do not hesitate to contact me at (555) 123-4567 or sarah.turner@email.com.
+    私はすぐに相手のドライバーであるダニエル レイノルズ氏と、名前、電話番号、保険の詳細、事故の簡単な説明などの情報を交換しました。さらに、両方の車両の損傷や信号の位置など、事故現場の写真を撮りました。
 
-    Thank you for your assistance, and I look forward to a swift resolution of this claim.
+    このメールには、写真、エバーグリーン警察署に提出された警察報告書のコピー、車を査定に出したエバーグリーン オート リペアからの修理費用の見積書など、必要な書類を添付しました。
 
-    Sincerely,
+    この件について早急に対応していただき、請求手続きの次のステップについてご指導いただければ幸いです。
+
+    追加の情報や書類が必要な場合は、(555) 123-4567 または sarah.turner@email.com までお気軽にご連絡ください。
+
+    ご協力に感謝いたします。この申し立てが速やかに解決されることを期待しています。
+
+    よろしくお願いいたします。
 
     Sarah Turner
     123 Oak Street
@@ -146,77 +150,69 @@ data:
     (555) 123-4567
     sarah.turner@email.com
     ',
-    '
-    On January 2, 2024, at around 3:30 PM, a car accident occurred at the intersection of Birch Street and Willow Avenue in Evergreen. The involved parties were Sarah Turner, driving a black Toyota Camry (DEF-456), and Daniel Reynolds in a blue Chevrolet Traverse (GHI-789).
+    '2024 年 1 月 2 日午後 3 時 30 分頃、エバーグリーンのバーチ ストリートとウィロー アベニューの交差点で自動車事故が発生しました。事故に巻き込まれたのは、黒のトヨタ カムリ (DEF-456) を運転していたサラ ターナーと、青のシボレー トラバース (GHI-789) を運転していたダニエル レイノルズです。
 
-    Sarah was heading south on Birch Street when Daniel failed to stop at the red traffic signal on Willow Avenue, causing a collision with Sarah''s vehicle. Both drivers exchanged information and took photos of the accident scene, which included damages to the front passenger side of Sarah''s Toyota Camry and the front driver''s side of Daniel''s Chevrolet Traverse. No injuries were reported.
+    サラがバーチ ストリートを南に向かっていたところ、ダニエルがウィロー アベニューの赤信号で停止せず、サラの車と衝突しました。両ドライバーは情報を交換し、事故現場の写真を撮影しました。そこにはサラのトヨタ カムリの助手席側とダニエルのシボレー トラバースの運転席側の損傷が含まれていました。負傷者は報告されていません。
 
-    Sarah has attached necessary documents, such as photos, a police report, and an estimate for repair costs, to her email. She requests prompt attention to the claim and is available at (555) 123-4567 or sarah.turner@email.com for any additional information or documentation needed.
+    サラは、写真、警察の報告書、修理費用の見積もりなどの必要な書類をメールに添付しました。彼女は、クレームへの迅速な対応を希望しており、追加情報や必要な書類については (555) 123-4567 または sarah.turner@email.com までご連絡ください。
     ',
-    'Intersection of Birch Street and Willow Avenue in the city of Evergreen',
-    'January 2nd, 2024, at approximately 3:30 PM',
-    'The sender, Sarah Turner, expresses a polite and professional tone in her email. She is respectful and detailed in her description of the car accident and the subsequent steps she took to file a claim. She requests prompt attention to the matter and provides all necessary documentation. Overall, her sentiment is one of being proactive and cooperative in the claims process.'
+    'エバーグリーン市のバーチ ストリートとウィロー アベニューの交差点',
+    '2024年1月2日午後3時30分頃',
+    '送信者のサラ・ターナーさんは、メールで丁寧かつプロフェッショナルな口調で話しています。彼女は自動車事故について、またその後の請求手続きについて、丁重かつ詳細に説明しています。彼女は、この問題に迅速に対応してほしいと依頼し、必要な書類をすべて提出しています。全体として、彼女は請求手続きに積極的かつ協力的であるようにと心掛けています。'
     );
 
     -- CLAIM2
 
-    INSERT INTO claims.claims (subject, body, summary, location, time, sentiment) VALUES ('Urgent: Unacceptable Delay and Lack of Communication Regarding Claim #XYZ789', '
-    Dear Prestige Insurances,
+    INSERT INTO claims.claims (subject, body, summary, location, time, sentiment) VALUES ('緊急: クレーム #XYZ789 に関する許容できない遅延とコミュニケーション不足', '
+    プレステージ インシュアランス様
 
-    I am writing to express my extreme dissatisfaction with the appalling service I have received concerning my recent claim, reference number #XYZ789. The lack of communication and delayed response from your company is utterly unacceptable, and I demand immediate attention to rectify this matter.
+    私は、最近の請求（参照番号 #XYZ789）に関して受けたひどいサービスに非常に不満を表明するためにこの手紙を書いています。貴社からの連絡不足と対応の遅れはまったく受け入れられません。この問題を是正するために早急な対応を求めます。
 
-    The accident occurred on January 15, 2024, at approximately 3:45 PM, near the intersection of Maple Street and Oak Avenue in Rivertown. My vehicle, a Silver Hawk GT, was struck by another driver, identified as Samantha Reynolds, who ran a red light at the aforementioned intersection. This incident resulted in substantial damage to the front end of my car, including severe structural damage and airbag deployment.
+    事故は 2024 年 1 月 15 日午後 3 時 45 分頃、リバータウンのメープル ストリートとオーク アベニューの交差点付近で発生しました。私の車であるシルバー ホーク GT は、前述の交差点で赤信号を無視したサマンサ レイノルズと特定される別のドライバーに衝突されました。この事故により、私の車の前部に大きな損傷が生じ、深刻な構造的損傷とエアバッグの展開が発生しました。
 
-    I reported the claim immediately after the accident, providing all necessary details, witness information, and a detailed description of the events leading up to the collision. However, the response—or lack thereof—from your company has been absolutely deplorable. I have yet to receive any updates on the status of my claim, and my attempts to contact your claims department have been met with prolonged hold times and unhelpful representatives.
-
-    I insist on a thorough investigation into this matter and demand an explanation for the unreasonable delay. It is my right as a policyholder to receive timely updates on the progress of my claim and to be treated with the respect and urgency that this situation demands.
-
-    Furthermore, the lack of transparency and communication from your company is not only unprofessional but also exacerbates the stress and inconvenience caused by the accident itself. I expect immediate action to be taken to expedite the processing of my claim and provide me with the information I am entitled to as a paying customer.
-
-    I am appalled at the disregard for customer satisfaction and the apparent negligence displayed by your company in handling my claim. If my concerns are not addressed promptly and to my satisfaction, I will have no choice but to escalate this matter to the appropriate regulatory authorities and consider legal action.
-
-    I demand a comprehensive update on the status of my claim within the next 48 hours. Failing to meet this deadline will only reinforce my belief that your company values its bottom line over the well-being of its customers.
-
-    I trust that you will treat this matter with the urgency and seriousness it deserves.
-
-    Sincerely,
-    John T. Anderson
-    Policy Number: PT567890
+    私は事故後すぐに請求を報告し、必要なすべての詳細、目撃者情報、衝突に至るまでの出来事の詳細な説明を提供しました。しかし、貴社の対応、あるいは対応の欠如は、まったく嘆かわしいものでした。
     ',
     '
-    The text is a letter of complaint from John T. Anderson to Prestige Insurances regarding an unresolved car insurance claim, #XYZ789. The incident occurred on January 15, 2024, when Anderson''s vehicle was hit by another driver, Samantha Reynolds, who ran a red light. The accident caused significant damage to Anderson''s car, and he reported the claim immediately, providing all necessary details. However, he has experienced poor communication and a delayed response from Prestige Insurances. Anderson demands an explanation for the delay, transparency, and urgency in handling his claim. He threatens to escalate the matter to regulatory authorities and consider legal action if his concerns are not addressed promptly. Anderson requests a comprehensive update on the status of his claim within the next 48 hours.
+    本文は、ジョン・T・アンダーソンがプレステージ・インシュアランスに提出した、未解決の自動車保険請求 #XYZ789 に関する苦情の手紙です。事件は 2024 年 1 月 15 日に発生し、アンダーソンの車が別のドライバーであるサマンサ・レイノルズに赤信号を無視されて衝突しました。事故によりアンダーソンの車は重大な損傷を受け、彼は必要な詳細をすべて提供して直ちに請求を報告しました。しかし、彼はプレステージ・インシュアランスからのコミュニケーションが不十分で、対応が遅れました。アンダーソンは、請求処理の遅延、透明性、緊急性について説明を求めています。彼は、懸念事項が速やかに解決されなければ、規制当局に問題をエスカレートし、法的措置を検討すると脅しています。アンダーソンは、今後 48 時間以内に請求状況の包括的な最新情報を要求しています。
     ',
-    'Near the intersection of Maple Street and Oak Avenue in Rivertown',
-    'January 15, 2024, at approximately 3:45 PM',
-    'The sender of this claim is expressing extreme dissatisfaction with the handling of their insurance claim by Prestige Insurances. They are frustrated with the lack of communication and the significant delay in processing their claim. The tone of the message is demanding and assertive, with the sender threatening to escalate the matter if their concerns are not addressed promptly.'
+    'リバータウンのメープルストリートとオークアベニューの交差点付近',
+    '2024年1月15日午後3時45分頃',
+    'このクレームの送信者は、Prestige Insurances による保険金請求の処理に非常に不満を表明しています。彼らは、コミュニケーション不足とクレーム処理の大幅な遅延に不満を抱いています。メッセージのトーンは要求的で断定的であり、送信者は懸念事項に迅速に対処しない場合は問題をエスカレートすると脅しています。'
     );
 
     -- CLAIM3
 
-    INSERT INTO claims.claims (subject, body) VALUES ('Urgent: Car Accident Claim Assistance Needed', '
-    Dear AssuranceCare Inc.,
+    INSERT INTO claims.claims (subject, body, summary, location, time, sentiment) VALUES ('緊急：自動車事故の賠償請求支援が必要です', '
+    AssuranceCare Inc. 様
 
-    I hope this email finds you well. I''m writing to, uh, inform you about, well, something that happened recently. It''s, um, about a car accident, and I''m not really sure how to, you know, go about all this. I''m kinda anxious and confused, to be honest.
+    このメールがお元気でいらっしゃることを願っております。最近起こった出来事についてお知らせするために書いています。車の事故についてなのですが、どう対処したらよいかよくわかりません。正直、不安で混乱しています。
 
-    So, the accident, uh, occurred on January 15, 2024, at around 3:30 PM. I was driving, or, um, attempting to drive, my car at the intersection of Maple Street and Elm Avenue. It''s kinda close to, um, a gas station and a, uh, coffee shop called Brew Haven? I''m not sure if that matters, but, yeah.
+    事故は、2024 年 1 月 15 日午後 3 時 30 分頃に発生しました。私は車を運転中、または運転しようとしていたとき、メープル ストリートとエルム アベニューの交差点にいました。ガソリン スタンドと、ブリュー ヘイブンというコーヒー ショップの近くでした。それが関係あるかどうかはわかりませんが、そうですね。
 
-    So, I was just, you know, driving along, and suddenly, out of nowhere, another car, a Blue Crest Sedan, crashed into the, uh, driver''s side of my car. It was like, whoa, what just happened, you know? There was this screeching noise and, uh, some honking from other cars, and I just felt really, uh, overwhelmed.
+    運転中だったのですが、突然、どこからともなく、別の車、ブルー クレスト セダンが私の車の運転席側に衝突しました。うわー、何が起こったんだって感じでした。他の車からキーキーという音がして、クラクションが鳴って、本当に、うーん、圧倒された気分でした。
 
-    The weather was, um, kinda cloudy that day, but I don''t think it was raining. I mean, I can''t really remember. Sorry if that''s important. Anyway, the road, or, well, maybe the intersection, was kinda busy, with cars going in different directions. I guess that''s, you know, a detail you might need?
+    その日の天気は、うーん、ちょっと曇りでしたが、雨は降っていなかったと思います。というか、よく覚えていないんです。重要なことでしたらすみません。とにかく、道路、いや、交差点は、車がさまざまな方向に走っていて、かなり混雑していました。それが、あなたが必要とするかもしれない詳細だと思います。
 
-    As for damages, my car has, uh, significant damage on the driver''s side. The front door is all dented, and the side mirror is, like, hanging by a thread. It''s not really drivable in its current, uh, state. The Blue Crest Sedan also had some damage, but I''m not exactly sure what because, you know, everything happened so fast.
+    損傷については、私の車は、運転席側にかなりの損傷があります。フロントドアはへこみ、サイドミラーは、糸でぶら下がっているような状態です。現状では、運転できる状態ではありません。ブルー クレスト セダンも損傷がありましたが、すべてがあまりにも急に起こったので、何が損傷したのか正確にはわかりません。
 
-    I did manage to exchange information with the other driver. Their name is Sarah Johnson, and I got their phone number (555-1234), license plate number (ABC123), and insurance information. So, yeah, I hope that''s helpful.
+    他のドライバーと情報を交換することはできました。名前はサラ・ジョンソンで、電話番号 (555-1234)、ナンバープレート番号 (ABC123)、保険情報を入手しました。それで、お役に立てば幸いです。
 
-    I''m not sure what, um, steps I should take now. Do I need to go to a specific, uh, repair shop? Should I get a quote for the repairs? And, uh, how do I, you know, proceed with the insurance claim? I''m kinda lost here, and any guidance or assistance you can provide would be really, um, appreciated.
+    今、何をすべきかよくわかりません。特定の修理工場に行く必要がありますか? 修理の見積もりを取る必要がありますか? また、保険金請求の手続きはどのように進めればよいですか? ちょっと途方に暮れています。何かアドバイスや支援をいただければ、本当にありがたいです。
 
-    Sorry if this email is a bit all over the place. I''m just really, uh, anxious about the whole situation. Thank you for your understanding.
+    このメールがまとまりがなく申し訳ありません。状況全体が本当に不安です。ご理解のほどよろしくお願いいたします。
 
-    Sincerely,
+    敬具、
 
-    Jane Doe
-    Policy Number: AC987654
-    ');
+    ジェーン・ドウ
+    保険証番号: AC987654
+    ',
+    '
+    2024 年 1 月 15 日午後 3 時 30 分頃、ジェーン・ドウはガソリンスタンドとブリュー・ヘイブンというコーヒーショップの近くにあるメープル・ストリートとエルム・アベニューの交差点で交通事故に遭いました。ブルー・クレスト・セダンが彼女の車の運転席側に衝突し、へこんだフロントドアやぶら下がったサイドミラーなど、運転席側に大きな損傷が生じました。天気は曇りでしたが、雨が降っていたかどうかは不明です。事故は複数の車が行き交う混雑した交差点で発生しました。ジェーンは他の運転手であるサラ・ジョンソンと情報を交換し、サラは彼女の電話番号 (555-1234)、ナンバープレート番号 (ABC123)、および保険情報を提供しました。ジェーンは、特定の修理工場に行く必要があるのか​​、修理の見積もりを取得する必要があるのか​​、保険金請求をどのように進めればよいのかなど、次に取るべき手順がわかりません。彼女は AssuranceCare Inc. に指導と支援を求めています。
+    ',
+    'メープルストリートとエルムアベニューの交差点',
+    '2024年1月15日午後3時30分頃',
+    '保険金請求の送信者であるジェーン・ドウさんは、自分が巻き込まれた自動車事故に関して不安と混乱を訴えています。彼女は、保険金請求の手続きと自動車の修理をスムーズに進めるために、AssuranceCare Inc. からの指導と支援を求めています。'
+    );
 
     -- IMAGES
 
@@ -229,6 +225,6 @@ data:
     INSERT INTO claims.processed_images (image_name, image_key, claim_id) VALUES ('car0-processed.jpg', 'processed_images/car0-processed.jpg', 1);
     INSERT INTO claims.processed_images (image_name, image_key, claim_id) VALUES ('car1-processed.jpg', 'processed_images/car1-processed.jpg', 1);
     INSERT INTO claims.processed_images (image_name, image_key, claim_id) VALUES ('car2-processed.jpg', 'processed_images/car2-processed.jpg', 2);
-    -- INSERT INTO claims.processed_images (image_name, image_key, claim_id) VALUES ('car3-processed.jpg', 'processed_images/car3-processed.jpg', 3);
-    -- INSERT INTO claims.processed_images (image_name, image_key, claim_id) VALUES ('car5-processed.jpg', 'processed_images/car5-processed.jpg', 3);
-    -- INSERT INTO claims.processed_images (image_name, image_key, claim_id) VALUES ('car6-processed.jpg', 'processed_images/car6-processed.jpg', 3);
+    INSERT INTO claims.processed_images (image_name, image_key, claim_id) VALUES ('car3-processed.jpg', 'processed_images/car3-processed.jpg', 3);
+    INSERT INTO claims.processed_images (image_name, image_key, claim_id) VALUES ('car5-processed.jpg', 'processed_images/car5-processed.jpg', 3);
+    INSERT INTO claims.processed_images (image_name, image_key, claim_id) VALUES ('car6-processed.jpg', 'processed_images/car6-processed.jpg', 3);
